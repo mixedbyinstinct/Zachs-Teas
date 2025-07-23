@@ -45,6 +45,7 @@ struct HeaderView: View {
 
                     if let overlay = iconOverlay {
                         overlay
+                            .offset(y: -10)
                     }
                 }
             }
