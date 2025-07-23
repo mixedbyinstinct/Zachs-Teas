@@ -14,6 +14,7 @@ struct TeaListView: View {
     @State private var iconWidth: CGFloat = 198.17
     @State private var iconHeight: CGFloat = 143.05
     @State private var fontSize: CGFloat = 48
+    @StateObject private var viewModel = TeaListViewModel()
 
     var body: some View {
         ZStack {
@@ -27,13 +28,44 @@ struct TeaListView: View {
                     iconWidth: iconWidth,
                     iconHeight: iconHeight
                 )
+                
+                if viewModel.isLoading {
+                    ProgressView()
+                } else if let error = viewModel.errorMessage {
+                    Text(error)
+                        .foregroundColor(.red)
+                } else {
+                    VStack {
+                        ForEach(viewModel.teas) { tea in
+                            //VStack {
+                                Text(tea.name)
+                                    .font(.custom("Amarante-Bold", size: 26))
+                                    .foregroundColor(.white)
 
-                Text("Teas in \(genre.displayName)")
+                                if let rating = tea.rating_hot {
+                                    Text("\(rating)/10")
+                                        .font(.custom("Amarante-Regular", size: 16))
+                                        .foregroundColor(.white)
+                                }
+                            //}
+                        }
+
+                        Text("+ New Tea")
+                            .font(.custom("Amarante-Bold", size: 24))
+                            .foregroundColor(.white)
+                            .shadow(color: Color(hex: "#85C226"), radius: 0, x: 1, y: 1)
+                    }
+                }
+
+               /* Text("Teas in \(genre.displayName)")
                     .font(.custom("Amarante-Regular", size: 45))
-                    .navigationTitle(genre.displayName)
+                    .navigationTitle(genre.displayName)*/
             }
         }
         .onAppear {
+            Task {
+                await viewModel.fetchTeas(for: genre.rawValue)
+            }
             if genre == .white {
                 stroked = true
             }
