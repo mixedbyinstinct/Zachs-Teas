@@ -24,15 +24,12 @@ struct GenreListView: View {
                     .ignoresSafeArea()
                 
                 VStack(spacing: 20) {
-                    Text("Zach's Teas")
-                        .font(.custom("Amarante-Regular", size: 45))
-                        .foregroundColor(Color(hex: "#EED160"))
-                        .shadow(color: Color(hex: "#582B0F"), radius: 4, x: 0, y: 4)
-                    
-                    Image("tea_cup_icon") // replace with your actual asset name
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 91, height: 69)
+                    HeaderView(
+                        title: "Zach's Teas",
+                        iconName: "tea_cup_icon",
+                        titleFont: .custom("Amarante-Regular", size: 45),
+                        titleColor: Color(hex: "#EED160")
+                    )
                     
                     
                     NavigationLink(destination: AddNewTeaView()) {
