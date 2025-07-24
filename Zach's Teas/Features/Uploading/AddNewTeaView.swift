@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct AddNewTeaView: View {
+    @StateObject private var viewModel = AddTeaViewModel()
+
     var body: some View {
         ZStack {
             Color(hex: "#FB711C")
                 .ignoresSafeArea()
-            VStack {
+            VStack(spacing: 20) {
                 HeaderView(
                     subtitle: "Add New Tea",
                     iconName: "tea_cup_icon",
@@ -31,10 +33,21 @@ struct AddNewTeaView: View {
                     iconHeight: 124.35
                 )
 
-
                 Text("TODO: Add New Tea Form")
                     .font(.custom("Amarante-Regular", size: 45))
+
+                Button("Upload Tea") {
+                    Task {
+                        await viewModel.uploadTea()
+                    }
+                }
+                .disabled(viewModel.isUploading)
+                .padding()
+                .background(Color(hex: "#FEC11B"))
+                .foregroundColor(.black)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
         }
     }
 }
+

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct TeaListView: View {
     let genre: TeaGenre
+    
     @State private var stroked: Bool = false
     @State private var iconWidth: CGFloat = 198.17
     @State private var iconHeight: CGFloat = 143.05
@@ -22,6 +23,7 @@ struct TeaListView: View {
     @State private var buttonBackgroundColor: Color = .black
     @State private var buttonTextColor: Color = .black
     @State private var buttonStrokeColor: Color = .white
+    
     @StateObject private var viewModel = TeaListViewModel()
     
     var body: some View {
@@ -111,7 +113,6 @@ struct TeaListView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .padding(.top, 8) // tweak spacing below the cup
                 }
-
             }
         }
         .onAppear {
@@ -121,9 +122,9 @@ struct TeaListView: View {
             if genre == .white {
                 stroked = true
             }
-            getColors()
+            setButtonColors()
             getIconSize()
-            getFont()
+            updateFont()
         }
     }
 
@@ -177,7 +178,7 @@ struct TeaListView: View {
     }
     
     // MARK: - Font logic
-    private func getFont() {
+    private func updateFont() {
         if genre == .white || genre == .puErh {
             newTeaIsBold = true
         }
@@ -186,46 +187,45 @@ struct TeaListView: View {
     }
     
     // MARK: - Color logic
-    private func getColors() {
-        if genre == .white || genre == .green || genre == .oolong || genre == .yellow || genre == .puErh {
-            newTeaIsStroked = true
-        }
-        
+    private func setButtonColors() {
         switch genre {
         case .white:
+            newTeaIsStroked = true
             newTeaStrokeColor = Color(hex: "#858911")
             buttonBackgroundColor = Color(hex: "#E9D9D9")
             buttonStroked = true
             buttonStrokeColor = Color(hex: "#FFFBFB")
             buttonTextColor = Color(hex: "#858911")
         case .green:
+            newTeaIsStroked = true
             newTeaStrokeColor = Color(hex: "#228709")
             buttonBackgroundColor = Color(hex: "#BEE95A")
             buttonStroked = true
             buttonStrokeColor = Color(hex: "#228709")
             buttonTextColor = Color(hex: "#93CD82")
         case .oolong:
+            newTeaIsStroked = true
             newTeaStrokeColor = Color(hex: "#B94E4E")
             buttonBackgroundColor = Color(hex: "#B36060")
             buttonTextColor = Color(hex: "#832F2F")
         case .yellow:
+            newTeaIsStroked = true
             newTeaStrokeColor = Color(hex: "#F4C712")
             buttonBackgroundColor = Color(hex: "#FFCE09")
             buttonStroked = true
             buttonStrokeColor = Color(hex: "#A8880A")
             buttonTextColor = Color(hex: "#FBED4B")
         case .puErh:
+            newTeaIsStroked = true
             newTeaStrokeColor = Color(hex: "#436171")
             buttonBackgroundColor = Color(hex: "#436171")
             buttonStroked = true
             buttonStrokeColor = Color(hex: "#A97C7C")
             buttonTextColor = Color(hex: "#946DCC")
         case .black:
-            newTeaStrokeColor = Color(hex: "#436171")
             buttonBackgroundColor = Color(hex: "#1E0F55")
             buttonTextColor = .black
         case .fermented:
-            newTeaStrokeColor = Color(hex: "#436171")
             buttonBackgroundColor = Color(hex: "#D31D1D")
             buttonTextColor = Color(hex: "#6E3333")
         }
