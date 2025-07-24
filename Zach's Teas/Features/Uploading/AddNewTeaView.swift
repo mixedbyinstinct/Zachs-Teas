@@ -15,6 +15,8 @@ struct AddNewTeaView: View {
             Color(hex: "#FB711C")
                 .ignoresSafeArea()
             VStack(spacing: 20) {
+                // MARK: - Header
+                
                 HeaderView(
                     subtitle: "Add New Tea",
                     iconName: "tea_cup_icon",
@@ -33,9 +35,11 @@ struct AddNewTeaView: View {
                     iconHeight: 124.35
                 )
 
+                // MARK: - Add tea form
                 Text("TODO: Add New Tea Form")
                     .font(.custom("Amarante-Regular", size: 45))
-
+                
+                // MARK: - Upload button
                 Button("Upload Tea") {
                     Task {
                         await viewModel.uploadTea()
