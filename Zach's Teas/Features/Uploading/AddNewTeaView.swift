@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AddNewTeaView: View {
     @StateObject private var viewModel = AddTeaViewModel()
+    @State private var showSeasonMenu: Bool = false
+    @State private var showRatingMenu: Bool = false
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -87,6 +89,7 @@ struct AddNewTeaView: View {
                 }
                 .frame(width: 317, height: 94)
                 .cornerRadius(10)
+                .shadow(color: Color(hex: "#D31D1D").opacity(0.3), radius: 4, x: 4, y: 4)
                 
                 // MARK: - Metadata form
                 VStack(spacing: 10) {
@@ -99,14 +102,20 @@ struct AddNewTeaView: View {
                         }
                         .frame(width:138, height: 46)
                         .cornerRadius(6)
+                        .shadow(color: Color(hex: "#D31D1D").opacity(0.3), radius: 4, x: 4, y: 4)
                         ZStack {
                             Color(hex: "#EED16082").opacity(0.51)
-                            Text("Season")
-                                .font(.custom("Buda-Light", size: 20))
-                                .foregroundColor(Color(hex:"#832F2FA6").opacity(0.65))
+                            Button(action: {
+                                showSeasonMenu = !showSeasonMenu
+                            }) {
+                                Text("Season")
+                                    .font(.custom("Buda-Light", size: 20))
+                                    .foregroundColor(Color(hex:"#832F2FA6").opacity(0.65))
+                            }
                         }
                         .frame(width: 176, height: 46)
                         .cornerRadius(6)
+                        .shadow(color: Color(hex: "#D31D1D").opacity(0.3), radius: 4, x: 4, y: 4)
                     }
                     HStack(spacing: 20) {
                         ZStack {
@@ -117,15 +126,22 @@ struct AddNewTeaView: View {
                         }
                         .frame(width:138, height: 46)
                         .cornerRadius(6)
+                        .shadow(color: Color(hex: "#D31D1D").opacity(0.3), radius: 4, x: 4, y: 4)
                         ZStack {
                             Color(hex: "#EED16082").opacity(0.51)
-                            Text("Rating")
-                                .font(.custom("Buda-Light", size: 20))
-                                .foregroundColor(Color(hex:"#832F2FA6").opacity(0.65))
+                            Button(action: {
+                                showRatingMenu = !showRatingMenu
+                            }) {
+                                Text("Rating")
+                                    .font(.custom("Buda-Light", size: 20))
+                                    .foregroundColor(Color(hex:"#832F2FA6").opacity(0.65))
+                            }
                         }
                         .frame(width: 176, height: 46)
                         .cornerRadius(6)
+                        .shadow(color: Color(hex: "#D31D1D").opacity(0.3), radius: 4, x: 4, y: 4)
                     }
+                    .padding(.top, 12)
                 }
                 // MARK: - Upload button
                 Button(action: {
@@ -154,6 +170,17 @@ struct AddNewTeaView: View {
                     .frame(width: 242, height: 54)
                     .cornerRadius(10)
                 }
+            }
+            
+            // MARK: - Pickers
+            if showSeasonMenu {
+                SeasonPickerView()
+                    .offset(x: 83, y: 142)
+            }
+            
+            if showRatingMenu {
+                RatingPickerView()
+                    .offset(x: 83, y: 240)
             }
         }
     }
