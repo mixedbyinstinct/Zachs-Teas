@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddNewTeaView: View {
     @StateObject private var viewModel = AddTeaViewModel()
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         ZStack {
@@ -35,21 +36,124 @@ struct AddNewTeaView: View {
                     iconHeight: 124.35
                 )
 
-                // MARK: - Add tea form
-                Text("TODO: Add New Tea Form")
-                    .font(.custom("Amarante-Regular", size: 45))
+                // MARK: - Name Card
+                ZStack {
+                    Color(hex: "#EED16082").opacity(0.51)
+                    VStack {
+                        Text("Name")
+                            .font(.custom("Buda-Light", size: 20))
+                            .foregroundColor(Color(hex:"#832F2FA6").opacity(0.65))
+                    }
+                }
+                .frame(width: 319, height: 46)
+                .cornerRadius(6)
                 
+                // MARK: - Genre Selector Card
+                ZStack {
+                    Color(hex: "#EED16082").opacity(0.51)
+                    VStack {
+                        Text("Genre")
+                            .font(.custom("Buda-Light", size: 20))
+                            .foregroundColor(Color(hex: "#832F2FA6").opacity(0.65))
+                            .frame(maxWidth: .infinity)
+                        VStack(spacing: 10) {
+                            HStack(spacing: 20) {
+                                Text("White")
+                                    .font(.custom("Amarante-Regular", size: 16))
+                                    .foregroundColor(TeaGenre.white.color)
+                                Text("Black")
+                                    .font(.custom("Amarante-Regular", size: 16))
+                                    .foregroundColor(TeaGenre.black.color)
+                                Text("Oolong")
+                                    .font(.custom("Amarante-Regular", size: 16))
+                                    .foregroundColor(TeaGenre.oolong.color)
+                                Text("Green")
+                                    .font(.custom("Amarante-Regular", size: 16))
+                                    .foregroundColor(TeaGenre.green.color)
+                            }
+                            HStack(spacing: 20) {
+                                Text("Pu'Erh")
+                                    .font(.custom("Amarante-Regular", size: 16))
+                                    .foregroundColor(TeaGenre.puErh.color)
+                                Text("Yellow")
+                                    .font(.custom("Amarante-Regular", size: 16))
+                                    .foregroundColor(TeaGenre.yellow.color)
+                                Text("Fermented(Hei Cha)")
+                                    .font(.custom("Amarante-Regular", size: 16))
+                                    .foregroundColor(TeaGenre.fermented.color)
+                            }
+                        }
+                    }
+                }
+                .frame(width: 317, height: 94)
+                .cornerRadius(10)
+                
+                // MARK: - Metadata form
+                VStack(spacing: 10) {
+                    HStack(spacing: 20) {
+                        ZStack {
+                            Color(hex: "#EED16082").opacity(0.51)
+                            Text("Year")
+                                .font(.custom("Buda-Light", size: 20))
+                                .foregroundColor(Color(hex:"#832F2FA6").opacity(0.65))
+                        }
+                        .frame(width:138, height: 46)
+                        .cornerRadius(6)
+                        ZStack {
+                            Color(hex: "#EED16082").opacity(0.51)
+                            Text("Season")
+                                .font(.custom("Buda-Light", size: 20))
+                                .foregroundColor(Color(hex:"#832F2FA6").opacity(0.65))
+                        }
+                        .frame(width: 176, height: 46)
+                        .cornerRadius(6)
+                    }
+                    HStack(spacing: 20) {
+                        ZStack {
+                            Color(hex: "#EED16082").opacity(0.51)
+                            Text("# of Steeps")
+                                .font(.custom("Buda-Light", size: 20))
+                                .foregroundColor(Color(hex:"#832F2FA6").opacity(0.65))
+                        }
+                        .frame(width:138, height: 46)
+                        .cornerRadius(6)
+                        ZStack {
+                            Color(hex: "#EED16082").opacity(0.51)
+                            Text("Rating")
+                                .font(.custom("Buda-Light", size: 20))
+                                .foregroundColor(Color(hex:"#832F2FA6").opacity(0.65))
+                        }
+                        .frame(width: 176, height: 46)
+                        .cornerRadius(6)
+                    }
+                }
                 // MARK: - Upload button
-                Button("Upload Tea") {
+                Button(action: {
                     Task {
                         await viewModel.uploadTea()
                     }
+                }) {
+                    ZStack {
+                        Color(hex: "#FAA70C")
+                        Text("Upload Tea")
+                            .font(.custom("Asul-Bold", size: 24))
+                            .foregroundColor(Color(hex: "##423227"))
+                    }
+                    .frame(width: 308, height: 57)
+                    .cornerRadius(15)
                 }
-                .disabled(viewModel.isUploading)
-                .padding()
-                .background(Color(hex: "#FEC11B"))
-                .foregroundColor(.black)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                
+                // MARK: - Cancel Button
+                Button(action: { dismiss() }) {
+                    ZStack {
+                        Color(hex: "#E5FCFF")
+                        Text("Cancel")
+                            .font(.custom("Asul-Bold", size: 24))
+                            .foregroundColor(Color(hex: "#DD2B13"))
+                    }
+                    .frame(width: 242, height: 54)
+                    .cornerRadius(10)
+                }
             }
         }
     }
