@@ -145,6 +145,7 @@ struct AddNewTeaView: View {
                 }
             }
         )
+        .hideKeyboardOnTap()
     }
 }
 
