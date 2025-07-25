@@ -1,3 +1,11 @@
+//
+//  GenrePickerCard.swift
+//  Zach's Teas
+//
+//  Created by Zach Baron on 7/25/25.
+//
+
+
 import SwiftUI
 
 struct GenrePickerCard: View {

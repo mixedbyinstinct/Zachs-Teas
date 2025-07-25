@@ -16,3 +16,31 @@ extension View {
         }
     }
 }
+
+extension Binding where Value == Int {
+    func asString() -> Binding<String> {
+        Binding<String>(
+            get: { String(self.wrappedValue) },
+            set: {
+                if let intVal = Int($0) {
+                    self.wrappedValue = intVal
+                }
+            }
+        )
+    }
+}
+
+extension View {
+    func placeholder<Content: View>(
+        when shouldShow: Bool,
+        alignment: Alignment = .leading,
+        @ViewBuilder placeholder: () -> Content
+    ) -> some View {
+        ZStack(alignment: alignment) {
+            if shouldShow {
+                placeholder()
+            }
+            self
+        }
+    }
+}

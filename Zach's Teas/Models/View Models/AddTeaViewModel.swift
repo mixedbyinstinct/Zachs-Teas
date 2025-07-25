@@ -13,17 +13,27 @@ import SwiftUI
 class AddTeaViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var genre: String = ""
-    @Published var year: Int = Calendar.current.component(.year, from: Date())
     @Published var season: String = ""
-    @Published var steeps: Int = 1
-    @Published var ratingHot: Int = 1
-    @Published var ratingIced: Int = 1
-    @Published var ratingColdBrew: Int = 1
+    @Published var ratingHot: Int = 0
+    @Published var ratingIced: Int = 0
+    @Published var ratingColdBrew: Int = 0
     @Published var dryPhoto: Data?
     @Published var wetPhoto: Data?
 
     @Published var isUploading = false
     @Published var uploadError: String?
+    
+    @Published var yearText: String = ""
+    @Published var steepsText: String = ""
+
+    var year: Int {
+        Int(yearText) ?? 0
+    }
+
+    var steeps: Int {
+        Int(steepsText) ?? 0
+    }
+
 
     func uploadTea() async {
         isUploading = true
