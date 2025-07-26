@@ -30,88 +30,89 @@ struct TeaListView: View {
         ZStack {
             Color(hex: "#FB711C")
                 .ignoresSafeArea()
-            
-            VStack {
-                HeaderView(
-                    iconName: "tea_cup_icon",
-                    iconOverlay: AnyView(getIconOverlay()),
-                    iconWidth: iconWidth,
-                    iconHeight: iconHeight
-                )
-                
-                NavigationLink(destination: SteepsView()) {
-                    if buttonStroked {
-                        StrokedText(
-                            text: "Number of Steeps",
-                            font: UIFont(name: "Belleza-Regular", size: 40)!,
-                            strokeColor: UIColor(buttonStrokeColor),
-                            foregroundColor: UIColor(buttonTextColor),
-                            strokeWidth: -2
-                        )
-                        .frame(width: 308, height: 63)
-                        .background(buttonBackgroundColor)
-                        .cornerRadius(13)
-                    } else {
-                        Text("Number of Steeps")
-                            .font(.custom("Belleza-Regular", size: 40))
-                            .foregroundColor(buttonTextColor)
+            ScrollView {
+                VStack {
+                    HeaderView(
+                        iconName: "tea_cup_icon",
+                        iconOverlay: AnyView(getIconOverlay()),
+                        iconWidth: iconWidth,
+                        iconHeight: iconHeight
+                    )
+                    
+                    NavigationLink(destination: SteepsView()) {
+                        if buttonStroked {
+                            StrokedText(
+                                text: "Number of Steeps",
+                                font: UIFont(name: "Belleza-Regular", size: 40)!,
+                                strokeColor: UIColor(buttonStrokeColor),
+                                foregroundColor: UIColor(buttonTextColor),
+                                strokeWidth: -2
+                            )
                             .frame(width: 308, height: 63)
                             .background(buttonBackgroundColor)
                             .cornerRadius(13)
-                    }
-                }
-                
-                if viewModel.isLoading {
-                    ProgressView()
-                } else if let error = viewModel.errorMessage {
-                    Text(error)
-                        .foregroundColor(.red)
-                } else {
-                    VStack(alignment: .center, spacing: 16) {
-                        ForEach(viewModel.teas) { tea in
-                            Text(tea.name)
-                                .font(.custom("Asul-Regular", size: 26))
-                                .foregroundColor(.white)
-
-                            HStack(spacing: 8) {
-                                Text("\(tea.rating_hot ?? 0)")
-                                    .font(.custom("Amarante-Regular", size: 16))
-                                    .foregroundColor(Color(hex: "#6B0303"))
-
-                                Text("\(tea.rating_iced ?? 0)")
-                                    .font(.custom("Amarante-Regular", size: 16))
-                                    .foregroundColor(Color(hex: "#140C86"))
-
-                                Text("\(tea.rating_coldbrew ?? 0)")
-                                    .font(.custom("Amarante-Regular", size: 16))
-                                    .foregroundColor(Color(hex: "#0C660C"))
-                            }
+                        } else {
+                            Text("Number of Steeps")
+                                .font(.custom("Belleza-Regular", size: 40))
+                                .foregroundColor(buttonTextColor)
+                                .frame(width: 308, height: 63)
+                                .background(buttonBackgroundColor)
+                                .cornerRadius(13)
                         }
-
-                        NavigationLink(destination: AddNewTeaView()) {
-                            if newTeaIsStroked {
-                                StrokedText(
-                                    text: "+ New Tea",
-                                    font: newTeaFont,
-                                    strokeColor: UIColor(newTeaStrokeColor),
-                                    foregroundColor: UIColor(genre.color),
-                                    strokeWidth: -2
-                                )
-                                .frame(width: 253, height: 72)
-                                .cornerRadius(15)
-                            } else {
-                                Text("+ New Tea")
-                                    .font(Font(newTeaFont))
-                                    .foregroundColor(genre.color)
+                    }
+                    
+                    if viewModel.isLoading {
+                        ProgressView()
+                    } else if let error = viewModel.errorMessage {
+                        Text(error)
+                            .foregroundColor(.red)
+                    } else {
+                        VStack(alignment: .center, spacing: 16) {
+                            ForEach(viewModel.teas) { tea in
+                                Text(tea.name)
+                                    .font(.custom("Asul-Regular", size: 26))
+                                    .foregroundColor(.white)
+                                
+                                HStack(spacing: 8) {
+                                    Text("\(tea.rating_hot ?? 0)")
+                                        .font(.custom("Amarante-Regular", size: 16))
+                                        .foregroundColor(Color(hex: "#6B0303"))
+                                    
+                                    Text("\(tea.rating_iced ?? 0)")
+                                        .font(.custom("Amarante-Regular", size: 16))
+                                        .foregroundColor(Color(hex: "#140C86"))
+                                    
+                                    Text("\(tea.rating_coldbrew ?? 0)")
+                                        .font(.custom("Amarante-Regular", size: 16))
+                                        .foregroundColor(Color(hex: "#0C660C"))
+                                }
+                            }
+                            
+                            NavigationLink(destination: AddNewTeaView()) {
+                                if newTeaIsStroked {
+                                    StrokedText(
+                                        text: "+ New Tea",
+                                        font: newTeaFont,
+                                        strokeColor: UIColor(newTeaStrokeColor),
+                                        foregroundColor: UIColor(genre.color),
+                                        strokeWidth: -2
+                                    )
                                     .frame(width: 253, height: 72)
                                     .cornerRadius(15)
+                                } else {
+                                    Text("+ New Tea")
+                                        .font(Font(newTeaFont))
+                                        .foregroundColor(genre.color)
+                                        .frame(width: 253, height: 72)
+                                        .cornerRadius(15)
+                                }
                             }
+                            
+                            Spacer() // pushes content up
                         }
-
-                        Spacer() // pushes content up
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .padding(.top, 8) // tweak spacing below the cup
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                    .padding(.top, 8) // tweak spacing below the cup
                 }
             }
         }
@@ -125,6 +126,7 @@ struct TeaListView: View {
             setButtonColors()
             getIconSize()
             updateFont()
+            
         }
     }
 

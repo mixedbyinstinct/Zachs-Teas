@@ -22,6 +22,7 @@ class AddTeaViewModel: ObservableObject {
 
     @Published var isUploading = false
     @Published var uploadError: String?
+    @Published var showSuccessToast: Bool = false
     
     @Published var yearText: String = ""
     @Published var steepsText: String = ""
@@ -64,6 +65,10 @@ class AddTeaViewModel: ObservableObject {
             }
 
             isUploading = false
+            showSuccessToast = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.showSuccessToast = false
+            }
         } catch {
             uploadError = error.localizedDescription
             isUploading = false

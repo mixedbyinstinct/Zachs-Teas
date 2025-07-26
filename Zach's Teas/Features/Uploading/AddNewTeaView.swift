@@ -45,7 +45,7 @@ struct AddNewTeaView: View {
                         iconHeight: 124.35
                     )
                     
-                    // MARK: - Name Card
+                    // MARK: - Metadata Form
                     ZStack {
                         Color(hex: "#EED160").opacity(0.51)
                         TextField("Name", text: $viewModel.name)
@@ -142,6 +142,10 @@ struct AddNewTeaView: View {
                         onSelect: { showRatingMenu = false }
                     )
                     .offset(x: 83, y: 220)
+                }
+                
+                if viewModel.showSuccessToast {
+                    SuccessToastView()
                 }
             }
         )
