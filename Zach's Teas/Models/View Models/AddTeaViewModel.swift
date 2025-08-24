@@ -23,6 +23,7 @@ class AddTeaViewModel: ObservableObject {
     @Published var isUploading = false
     @Published var uploadError: String?
     @Published var showSuccessToast: Bool = false
+    @Published var showErrorToast: Bool = false
     
     @Published var yearText: String = ""
     @Published var steepsText: String = ""
@@ -72,6 +73,10 @@ class AddTeaViewModel: ObservableObject {
         } catch {
             uploadError = error.localizedDescription
             isUploading = false
+            showErrorToast = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
+                self.showErrorToast = false
+            }
         }
     }
 
@@ -90,14 +95,14 @@ class AddTeaViewModel: ObservableObject {
         let url = URL(string: "http://10.0.0.46:3090/upload-photo/\(teaID.uuidString)/\(type)")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.timeoutInterval = 120  // Increased timeout for larger uploads
 
         let boundary = UUID().uuidString
         let filename = "\(type).jpg"
         let fieldName = "file"
         let mimeType = "image/jpeg"
 
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-
+        // Build multipart body
         var body = Data()
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
@@ -105,10 +110,22 @@ class AddTeaViewModel: ObservableObject {
         body.append(data)
         body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
 
+        // Log size for debugging
+        print("📸 Uploading photo '\(type)' (\(data.count) bytes)")
+
+        // Set headers
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.setValue("\(body.count)", forHTTPHeaderField: "Content-Length")
+
         request.httpBody = body
 
-        _ = try await URLSession.shared.data(for: request)
+        let (_, response) = try await URLSession.shared.data(for: request)
+
+        if let httpResponse = response as? HTTPURLResponse {
+            print("📶 Photo upload response: \(httpResponse.statusCode)")
+        }
     }
+
 
     enum UploadError: Error {
         case metadataFailed

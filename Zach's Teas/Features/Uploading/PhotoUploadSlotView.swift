@@ -8,14 +8,23 @@ import SwiftUI
 
 struct PhotoUploadSlotView: View {
     let label: String
+    @Binding var imageData: Data?
+    @State private var showImagePicker = false
 
     var body: some View {
         ZStack {
-           // Color(hex: "#EED160").opacity(0.3)
-
-            Text("+\(label)")
-                .font(.custom("Buda-Light", size: 20))
-                .foregroundColor(Color(hex: "#A25424"))
+            if let data = imageData, let uiImage = UIImage(data: data) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 112, height: 116)
+                    .clipped()
+                    .cornerRadius(8)
+            } else {
+                Text("+\(label)")
+                    .font(.custom("Buda-Light", size: 20))
+                    .foregroundColor(Color(hex: "#A25424"))
+            }
         }
         .frame(width: 112, height: 116)
         .overlay(
@@ -24,5 +33,11 @@ struct PhotoUploadSlotView: View {
                 .foregroundColor(Color(hex: "#B94E4E"))
         )
         .cornerRadius(8)
+        .onTapGesture {
+            showImagePicker = true
+        }
+        .sheet(isPresented: $showImagePicker) {
+            PhotoPicker(imageData: $imageData)
+        }
     }
 }

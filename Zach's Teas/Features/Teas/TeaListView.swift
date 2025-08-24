@@ -69,9 +69,11 @@ struct TeaListView: View {
                     } else {
                         VStack(alignment: .center, spacing: 16) {
                             ForEach(viewModel.teas) { tea in
-                                Text(tea.name)
-                                    .font(.custom("Asul-Regular", size: 26))
-                                    .foregroundColor(.white)
+                                NavigationLink(destination: TeaDetailView(teaID: tea.id, genre: genre)) {
+                                    Text(tea.name)
+                                        .font(.custom("Asul-Regular", size: 26))
+                                        .foregroundColor(.white)
+                                }
                                 
                                 HStack(spacing: 8) {
                                     Text("\(tea.rating_hot ?? 0)")
